@@ -6,13 +6,12 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.example.studentapp.models.Model
 import com.example.studentapp.models.Student
 
 class StudentEditArea : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.student_edit_area)
+    setContentView(R.layout.activity_edit_area)
 
     // הפעלת כפתור חזרה (אם יש ActionBar נתמך)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -12,20 +12,20 @@ import com.example.studentapp.models.Model
 class StudentListActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_students_list)
+    setContentView(R.layout.activity_student_list)
 
     val recyclerView: RecyclerView = findViewById(R.id.students_recycler_view)
     val addButton: Button = findViewById(R.id.add_student_button)
 
     recyclerView.layoutManager = LinearLayoutManager(this)
     recyclerView.adapter = StudentsRecyclerAdapter(Model.students) { student ->
-      val intent = Intent(this, studentDetailActivity::class.java)
+      val intent = Intent(this, StudentDetailActivity::class.java)
       intent.putExtra("student", student)
       startActivity(intent)
     }
 
     addButton.setOnClickListener {
-      val intent = Intent(this, addStudentActivity::class.java)
+      val intent = Intent(this, AddStudentActivity::class.java)
       startActivity(intent)
     }
   }
