@@ -37,7 +37,6 @@ class StudentEditArea : AppCompatActivity() {
     }
   }
 
-  // פונקציה משותפת ששומרת את העדכונים ומחזירה תוצאה
   private fun saveAndFinish() {
     student?.let {
       it.name = nameEditText.text.toString()
@@ -50,15 +49,13 @@ class StudentEditArea : AppCompatActivity() {
     finish()
   }
 
-  // כאשר לוחצים על כפתור החץ בחלק העליון של ה־ActionBar
   override fun onSupportNavigateUp(): Boolean {
     saveAndFinish()
     return true
   }
 
-  // כאשר לוחצים על כפתור החזרה של המכשיר
   override fun onBackPressed() {
-      super.onBackPressed()
+      onBackPressed()
       saveAndFinish()
   }
 }

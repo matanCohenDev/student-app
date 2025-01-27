@@ -11,6 +11,8 @@ import com.example.studentapp.models.Model
 import com.example.studentapp.models.Student
 
 class StudentDetailActivity : AppCompatActivity() {
+    private var originalId: String? = null
+
     companion object {
         private const val EDIT_STUDENT_REQUEST = 1
     }
@@ -31,6 +33,8 @@ class StudentDetailActivity : AppCompatActivity() {
         val editBtn: Button = findViewById(R.id.edit_button)
 
         student = intent.getSerializableExtra("student") as? Student
+        originalId = student?.id
+
 
         deleteBtn.setOnClickListener {
             student?.let {
@@ -68,12 +72,13 @@ class StudentDetailActivity : AppCompatActivity() {
         if (requestCode == EDIT_STUDENT_REQUEST && resultCode == Activity.RESULT_OK) {
             val updatedStudent = data?.getSerializableExtra("updated_student") as? Student
             updatedStudent?.let { newStu ->
-                val index = Model.students.indexOfFirst { it.id == newStu.id }
+                val index = Model.students.indexOfFirst { it.id == originalId}
                 if (index != -1) {
                     Model.students[index] = newStu
                 }
 
                 student = newStu
+                originalId = newStu.id
                 updateStudentDetails()
             }
         }
