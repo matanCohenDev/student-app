@@ -9,18 +9,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.studentapp.models.Student
 
 class StudentEditArea : AppCompatActivity() {
+
+  private var student: Student? = null
+  private lateinit var nameEditText: EditText
+  private lateinit var idEditText: EditText
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_edit_area)
 
-    // הפעלת כפתור חזרה (אם יש ActionBar נתמך)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.title = "Edit Student"
 
-    val student = intent.getSerializableExtra("student") as? Student
+    student = intent.getSerializableExtra("student") as? Student
 
-    val nameEditText: EditText = findViewById(R.id.edit_student_name)
-    val idEditText: EditText = findViewById(R.id.edit_student_id)
+    nameEditText = findViewById(R.id.edit_student_name)
+    idEditText = findViewById(R.id.edit_student_id)
     val saveButton: Button = findViewById(R.id.save_student_button)
 
     student?.let {
@@ -29,28 +33,32 @@ class StudentEditArea : AppCompatActivity() {
     }
 
     saveButton.setOnClickListener {
-      student?.let {
-        it.name = nameEditText.text.toString()
-        it.id = idEditText.text.toString()
-
-        val resultIntent = Intent()
-        resultIntent.putExtra("updated_student", it)
-        setResult(Activity.RESULT_OK, resultIntent)
-
-        finish()
-      }
+      saveAndFinish()
     }
   }
 
-  // הפעלת כפתור ה-Back המובנה של המובייל
-  override fun onBackPressed() {
-    super.onBackPressed()
+  // פונקציה משותפת ששומרת את העדכונים ומחזירה תוצאה
+  private fun saveAndFinish() {
+    student?.let {
+      it.name = nameEditText.text.toString()
+      it.id = idEditText.text.toString()
+
+      val resultIntent = Intent()
+      resultIntent.putExtra("updated_student", it)
+      setResult(Activity.RESULT_OK, resultIntent)
+    }
     finish()
   }
 
-  // הפעלת כפתור החץ חזרה המובנה (ActionBar)
+  // כאשר לוחצים על כפתור החץ בחלק העליון של ה־ActionBar
   override fun onSupportNavigateUp(): Boolean {
-    finish()
+    saveAndFinish()
     return true
+  }
+
+  // כאשר לוחצים על כפתור החזרה של המכשיר
+  override fun onBackPressed() {
+      super.onBackPressed()
+      saveAndFinish()
   }
 }

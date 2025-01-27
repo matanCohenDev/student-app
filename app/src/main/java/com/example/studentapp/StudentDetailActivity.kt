@@ -3,6 +3,7 @@ package com.example.studentapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,9 @@ class StudentDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_detail)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.my_toolbar)
+
+        setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Student Details"
@@ -62,8 +66,16 @@ class StudentDetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == EDIT_STUDENT_REQUEST && resultCode == Activity.RESULT_OK) {
-            student = data?.getSerializableExtra("updated_student") as? Student
-            updateStudentDetails()
+            val updatedStudent = data?.getSerializableExtra("updated_student") as? Student
+            updatedStudent?.let { newStu ->
+                val index = Model.students.indexOfFirst { it.id == newStu.id }
+                if (index != -1) {
+                    Model.students[index] = newStu
+                }
+
+                student = newStu
+                updateStudentDetails()
+            }
         }
     }
 
@@ -71,4 +83,14 @@ class StudentDetailActivity : AppCompatActivity() {
         finish()
         return true
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()  // או finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }
